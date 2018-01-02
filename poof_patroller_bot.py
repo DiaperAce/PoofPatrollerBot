@@ -21,7 +21,7 @@ import logging
 ############
 #Parameters#
 ############
-authToken = '545347539:AAF84g-eGfZcBA6Sp1W1zyOVMvgbdW_AQQY' #a token that lets Python communicate with the bot
+authToken = 'TOKEN_GOES_HERE' #a token that lets Python communicate with the bot
 
 ##############
 #Py Functions#
