@@ -12,8 +12,6 @@ Basically Rolls a dice and returns a status
 #from uuid import uuid4
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
-from telegram import InlineQueryResultArticle, InputTextMessageContent
-from telegram.ext import InlineQueryHandler
 import random as rand
 from time import sleep
 import logging
@@ -26,6 +24,9 @@ authToken = 'TOKEN_GOES_HERE' #a token that lets Python communicate with the bot
 ##############
 #Py Functions#
 ##############
+
+global Certified_Big
+Certified_Big = ["aliothfox","socallioncub"]
 
 def roll():
     """
@@ -45,13 +46,19 @@ def check_pamps(username):
     #Apply the result
     str(username)
     status_dic ={
-        0: ["@"+username+" is wet and messy. Bummer, kiddo. Looks like you won't be out of those diapers any time soon."],
-        1: ["@"+username+" is messy. Oof! That smell is overpowering."],
+        0: ["@"+username+" is wet and messy. Bummer, kiddo. Looks like you won't be out of diapers any time soon."
+            "@"+username+" is wet and messy. Somebody change them before they get a bad rash!"],
+        1: ["@"+username+" is messy. Oof! That smell is overpowering.",
+            "@"+username+" is messy. Looks like potty training isn't going so well."],
         2: ["@"+username+" is soaked! Chance of leaking at 95% if not changed immediately.",
             "Oh no! @"+username+" is about to leak! Someone needs chanigng pronto!"],
-        3: ["@"+username+" is wet, but their diaper can still hold quite a bit more."],
-        4: ["@"+username+" is a little damp. Looks like they're not as big as they think."],
-        5: ["@"+username+" is clean. What a big kid!"]
+        3: ["@"+username+" is wet, but their diaper can still hold quite a bit more.",
+            "@"+username+" is wet. They probably like being in soggy padding or they would have asked for a change by now."],
+        4: ["@"+username+" is a little damp. Looks like they're not as big as they think.",
+            "@"+username+" is a little damp. Someone didn't quite make it to the potty."],
+        5: ["@"+username+" is clean. What a big kid!",
+            "@"+username+" is clean. They must have been changed recently.",
+            "@"+username+" is clean. They deserve a sticker on their sticker chart."]
         }
     
     status = rand.choice(status_dic[diapercheck])
@@ -88,6 +95,13 @@ def check(bot, update,args):
     else:
         bab=args[0]
     
+    #Checks for certified big
+    for bigkid in Certified_Big:
+        if bab.lower() == bigkid:
+            M1="Thank you for choosing Poof Patroller Bot for all your diaper checking needs.\n\n@"+bab+" is potty trained. You should be put in time out for trying to abuse Poof Patroller Bot."
+            bot.send_message(chat_id=update.message.chat_id, text=M1)
+            return
+    
     #write output strings for greeting
     
     M1 = "Thank you for choosing Poof Patroller Bot for all your diaper checking needs. Please hold while I check the status of @"+bab+"'s diaper."
@@ -105,51 +119,7 @@ def check(bot, update,args):
     outText = check_pamps(bab)
     #send output to bot
     bot.send_message(chat_id=update.message.chat_id, text=outText)
-    return
-
-"""
-def inline_check(bot, update):
-    '''Handle the inline query.'''
-    bab = update.inline_query.query
-    M1 = "Thank you for choosing Poof Patroller Bot for all your diaper checking needs. Please hold while I check the status of @"+bab+"'s diaper."
-    results = [
-        InlineQueryResultArticle(
-        id=uuid4(),
-        title="Greeting 1",
-        input_message_content=InputTextMessageContent(M1))]
-    update.inline_query.answer(results)
-    
-    M2 = "Tugging on the back of @"+bab+"'s diaper..."
-    sleep(2) #pause for effect
-    results = [
-        InlineQueryResultArticle(
-        id=uuid4(),
-        title="Greeting 2",
-        input_message_content=InputTextMessageContent(M2))]
-    update.inline_query.answer(results)
-    sleep(1.5) #pause for effect
-    
-    M3 = "Checking @"+bab+"'s leg cuff for sogginess..."
-    results = [
-        InlineQueryResultArticle(
-        id=uuid4(),
-        title="Greeting 3",
-        input_message_content=InputTextMessageContent(M3))]
-    update.inline_query.answer(results)
-    sleep(2) #pause for effect
-    
-    status = check_pamps()
-    outText = "@" + bab + status
-    
-    results = [
-        InlineQueryResultArticle(
-        id=uuid4(),
-        title="Check",
-        input_message_content=InputTextMessageContent(outText))]
-    update.inline_query.answer(results)
-    
-    return
-"""        
+    return     
 
 ######
 #Main#
@@ -167,13 +137,11 @@ def main(Token):
     #Define the start and roll handlers
     start_handler = CommandHandler('start', start)
     check_handler = CommandHandler('check', check, pass_args=True)
-    #inline_check_handler = InlineQueryHandler(inline_check)
 
     
     #Tell the dispatcher where to find the handlers
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(check_handler)
-    #dispatcher.add_handler(inline_check_handler)
     
     #Start the bot
     updater.start_polling()
