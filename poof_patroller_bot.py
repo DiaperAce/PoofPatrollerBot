@@ -46,7 +46,7 @@ def check_pamps(username):
     #Apply the result
     str(username)
     status_dic ={
-        0: ["@"+username+" is wet and messy. Bummer, kiddo. Looks like you won't be out of diapers any time soon."
+        0: ["@"+username+" is wet and messy. Bummer, kiddo. Looks like you won't be out of diapers any time soon.",
             "@"+username+" is wet and messy. Somebody change them before they get a bad rash!"],
         1: ["@"+username+" is messy. Oof! That smell is overpowering.",
             "@"+username+" is messy. Looks like potty training isn't going so well."],
