@@ -2,7 +2,7 @@
 Repository for @PoofPatrollerBot on Telegram
 
 # Version History
-- v0.2.1
+- v0.2.1 ~ 26 Aug 2018
   - Fixed a spelling error
   - PoofPatrollerBot added to "Certified Big" list
 - v0.2.0
