@@ -26,7 +26,7 @@ authToken = 'TOKEN_GOES_HERE' #a token that lets Python communicate with the bot
 ##############
 
 global Certified_Big
-Certified_Big = ["aliothfox","socallioncub"]
+Certified_Big = ["aliothfox","socallioncub","poofpatrollerbot"]
 
 def roll():
     """
@@ -51,7 +51,7 @@ def check_pamps(username):
         1: ["@"+username+" is messy. Oof! That smell is overpowering.",
             "@"+username+" is messy. Looks like potty training isn't going so well."],
         2: ["@"+username+" is soaked! Chance of leaking at 95% if not changed immediately.",
-            "Oh no! @"+username+" is about to leak! Someone needs chanigng pronto!"],
+            "Oh no! @"+username+" is about to leak! Someone needs changing pronto!"],
         3: ["@"+username+" is wet, but their diaper can still hold quite a bit more.",
             "@"+username+" is wet. They probably like being in soggy padding or they would have asked for a change by now."],
         4: ["@"+username+" is a little damp. Looks like they're not as big as they think.",
