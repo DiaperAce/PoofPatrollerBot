@@ -3,7 +3,7 @@
 
 """
 v0.2
-@BlueEarOtter 2020 29 Nov  -- 1606673790
+@BlueEarOtter 2020 Nov 29 -- 1606673790
 
 Poof Patroller Bot
 
