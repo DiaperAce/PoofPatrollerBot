@@ -19,14 +19,14 @@ import logging
 ############
 #Parameters#
 ############
-authToken = 'TOKEN_GOES_HERE' #a token that lets Python communicate with the bot
+authToken = 'TOKEN GOES HERE' #a token that lets Python communicate with the bot
 
 ##############
 #Py Functions#
 ##############
 
 global Certified_Big
-Certified_Big = ["aliothfox","socallioncub","poofpatrollerbot"]
+Certified_Big= ["aliothfox","socallioncub","poofpatrollerbot", "bouquetnine","jacarandadeer","saphs"]
 
 def roll():
     """
