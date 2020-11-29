@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-@BlueEarOtter 2 Jan 2018  -- 151488595
+v0.2
+@BlueEarOtter 2020 29 Nov  -- 1606673790
 
 Poof Patroller Bot
 
