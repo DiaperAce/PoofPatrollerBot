@@ -1,18 +1,19 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
-v0.2
-@BlueEarOtter 2020 Nov 29 -- 1606673790
+@BlueEarOtter 2020 Dec 8  -- 1607469009
 
 Poof Patroller Bot
 
 Basically Rolls a dice and returns a status
+
+v1.0
 """
 
 #from uuid import uuid4
-from telegram.ext import Updater
-from telegram.ext import CommandHandler
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 import random as rand
 from time import sleep
 import logging
@@ -20,7 +21,7 @@ import logging
 ############
 #Parameters#
 ############
-authToken = 'TOKEN GOES HERE' #a token that lets Python communicate with the bot
+authToken = INSERT TOKEN HERE #a token that lets Python communicate with the bot
 
 ##############
 #Py Functions#
@@ -43,7 +44,7 @@ def check_pamps(username):
     """
     #Roll the dice
     diapercheck = roll()
-    
+
     #Apply the result
     str(username)
     status_dic ={
@@ -61,7 +62,7 @@ def check_pamps(username):
             "@"+username+" is clean. They must have been changed recently.",
             "@"+username+" is clean. They deserve a sticker on their sticker chart."]
         }
-    
+
     status = rand.choice(status_dic[diapercheck])
     return status
 
@@ -69,58 +70,59 @@ def check_pamps(username):
 # /functions#
 #############
 
-def start(bot, update):
+def start(update: Update, context: CallbackContext) -> None:
     """
-    /start fucntion
+    /start function
     Message that greets users when they first launch the bot.
         -indicates what the /check command does
     """
     #Write welcome message
     welcomeText = "Thank you for choosing Poof Patroller Bot for all your diaper checking needs. Please use /check @username to check the status of someone's padding"
     #Send welcome message to bot
-    bot.send_message(chat_id=update.message.chat_id,text=welcomeText)
+    update.message.reply_text(welcomeText)
     return
 
-def check(bot, update,args):
+def check(update: Update, context: CallbackContext) -> None:
     """
     /check function. Genetrates a random number between 0 and 5, and reports the status of someone's diaper based on the results
     """
     #Read username
-    if not args:
+    if not context.args:
         M1 = "Thank you for choosing Poof Patroller Bot for all your diaper checking needs. Please specify a person's diaper to check using the syntax \n\n/check @username."
-        bot.send_message(chat_id=update.message.chat_id, text=M1)
+        update.message.reply_text(M1)
         return
+
     #takes care of the @
-    if args[0][0]=="@":
-        bab=str(args[0][1::])
+    if context.args[0][0]=="@":
+        bab=str(context.args[0][1::])
     else:
-        bab=args[0]
-    
+        bab=context.args[0]
+
     #Checks for certified big
     for bigkid in Certified_Big:
         if bab.lower() == bigkid:
             M1="Thank you for choosing Poof Patroller Bot for all your diaper checking needs.\n\n@"+bab+" is potty trained. You should be put in time out for trying to abuse Poof Patroller Bot."
-            bot.send_message(chat_id=update.message.chat_id, text=M1)
+            update.message.reply_text(M1)
             return
-    
+
     #write output strings for greeting
-    
+
     M1 = "Thank you for choosing Poof Patroller Bot for all your diaper checking needs. Please hold while I check the status of @"+bab+"'s diaper."
-    bot.send_message(chat_id=update.message.chat_id, text=M1)
+    update.message.reply_text(M1)
     sleep(2) #pause for effect
-    
+
     M2 = "Tugging on the back of @"+bab+"'s diaper..."
-    bot.send_message(chat_id=update.message.chat_id, text=M2)
+    update.message.reply_text(M2)
     sleep(1.5)#etc
-    
+
     M3 = "Checking @"+bab+"'s leg cuff for sogginess..."
-    bot.send_message(chat_id=update.message.chat_id, text=M3)
+    update.message.reply_text(M3)
     sleep(2)#etc
-    
+
     outText = check_pamps(bab)
     #send output to bot
-    bot.send_message(chat_id=update.message.chat_id, text=outText)
-    return     
+    update.message.reply_text(outText)
+    return
 
 ######
 #Main#
@@ -130,23 +132,24 @@ def main(Token):
     #Create an update/dispatch channel to communicate with bot
     updater = Updater(token=Token)
     dispatcher = updater.dispatcher
-    
+
     #Create a log file
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                         level=logging.INFO)
-    
+
     #Define the start and roll handlers
     start_handler = CommandHandler('start', start)
-    check_handler = CommandHandler('check', check, pass_args=True)
+    check_handler = CommandHandler('check', check)
 
-    
+
     #Tell the dispatcher where to find the handlers
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(check_handler)
-    
+
     #Start the bot
     updater.start_polling()
-    
+    updater.idle()
+
     return
 
 ####################
